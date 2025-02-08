@@ -1,0 +1,11 @@
+services:
+  nginx:
+    image: adeharo-dev-web:0.0.1
+    ports:
+      - "8443:443"
+    volumes:
+      - "ssl-certs:/ssl:ro"
+
+volumes:
+  ssl-certs:
+    external: true

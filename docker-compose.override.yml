@@ -1,0 +1,9 @@
+services:
+  nginx:
+    image: nginx:1.27.4-alpine
+    ports:
+      - "8443:443"
+    volumes:
+      - "./config/nginx:/etc/nginx/conf.d:ro"
+      - "./public:/var/www/adeharo-dev:ro"
+      - "./ssl:/ssl:ro"

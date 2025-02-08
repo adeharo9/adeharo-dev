@@ -1,0 +1,79 @@
+/* Google Fonts */
+@import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
+
+/* Global */
+html {
+  min-height: 100%;
+  overflow: hidden;
+}
+
+body {
+  height: calc(100vh - 8em);
+  padding: 4em;
+  color: #7f174d;
+  font-family: 'Anonymous Pro', monospace;
+  background-color: #f7f7f7;
+}
+
+p {
+    position: relative;
+    top: 50%;
+    width: 6em;
+    margin: 0 auto;
+    font-size: 180%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: translateY(-50%);
+}
+
+.upper {
+  padding-bottom: 1em;
+}
+
+.with-cursor {
+  border-right: 2px solid #7f174d;
+}
+
+/* Animation */
+.anim-typewriter {
+  animation: typewriter 6s steps(11) infinite normal both,
+             blinkTextCursor 500ms steps(11) infinite normal;
+}
+
+/*
+  - sec 1: paused at 0% width
+  - sec 2: expanding from 0% to 100% width
+  - sec 3: paused at 100% width
+  - secs 4 & 5: contracting from 100% to 0%
+  - sec 6: paused at 0% width
+ */
+@keyframes typewriter {
+  0% {
+    width: 0;
+  }
+  16.67% {
+    width: 0;
+  }
+  33.33% {
+    width: 6em;
+  }
+  50% {
+    width: 6em;
+  }
+  83.33% {
+    width: 0;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes blinkTextCursor {
+  from {
+    border-right-color: #7f174d;
+  }
+  to {
+    border-right-color: transparent;
+  }
+}
