@@ -1,0 +1,7 @@
+# Ignore everything
+*
+
+# Allow only some files and directories
+!config/
+!public/
+!Dockerfile
