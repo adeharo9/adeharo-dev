@@ -98,7 +98,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - deploy-prod
-    environment: production
     steps:
       - name: 'Clean up GitHub container registry'
         uses: Chizkiyahu/delete-untagged-ghcr-action@v6
