@@ -11,11 +11,13 @@ concurrency:
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  DOCKER_IMAGE_COMMIT_TAG: ghcr.io/${{github.repository}}:${{github.sha}}
-  DOCKER_IMAGE_LATEST_TAG: ghcr.io/${{github.repository}}:latest
+  DOCKER_IMAGE_COMMIT_TAG: ghcr.io/${{ github.repository }}:${{ github.sha }}
+  DOCKER_IMAGE_LATEST_TAG: ghcr.io/${{ github.repository }}:latest
+  SERVER_HOST: adeharo.dev
+  SERVER_USERNAME: ghactions
 
 jobs:
-  test-config-dev:
+  static-test-dev:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout GitHub repository'
@@ -24,7 +26,7 @@ jobs:
       - name: 'Test Docker compose dev configuration'
         run: docker compose -f docker-compose.yml -f deployment/dev/docker-compose.dev.yml config
 
-  test-config-prod:
+  static-test-prod:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout GitHub repository'
@@ -33,23 +35,20 @@ jobs:
       - name: 'Test Docker compose prod configuration'
         run: docker compose -f docker-compose.yml -f deployment/prod/docker-compose.prod.yml config
 
-  publish-docker-image:
+  docker-publish:
     runs-on: ubuntu-latest
     needs:
-      - test-config-dev
-      - test-config-prod
+      - static-test-dev
+      - static-test-prod
     permissions:
       packages: write
     steps:
-      - name: 'Checkout GitHub repository'
-        uses: actions/checkout@v4
-
       - name: 'Login to GitHub container registry'
         uses: docker/login-action@v3
         with:
-          registry: ${{env.DOCKER_REGISTRY}}
-          username: ${{github.actor}}
-          password: ${{secrets.GITHUB_TOKEN}}
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Set up QEMU'
         uses: docker/setup-qemu-action@v3
@@ -62,12 +61,31 @@ jobs:
         with:
           platforms: linux/amd64, linux/arm64/v8
           push: true
-          tags: ${{env.DOCKER_IMAGE_COMMIT_TAG}}, ${{env.DOCKER_IMAGE_LATEST_TAG}}
+          tags: ${{ env.DOCKER_IMAGE_LATEST_TAG }}
 
-  deploy-to-server:
+  deploy:
     runs-on: ubuntu-latest
     needs:
-      - publish-docker-image
+      - docker-publish
     steps:
-      - name: 'Dummy step'
-        run: echo "Success!"
+      - name: 'Checkout GitHub repository'
+        uses: actions/checkout@v4
+
+      - name: 'Install SSH key'
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail
+
+      - name: 'Generating Docker compose for prod'
+        run: docker compose -f docker-compose.yml -f deployment/prod/docker-compose.prod.yml config > docker-compose.prod-merged.yml
+
+      - name: 'Rsync Docker compose'
+        run: rsync docker-compose.prod-merged.yml ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST }}:docker-compose.yml
+
+      - name: 'Pull latest Docker image'
+        run: ssh ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST }} 'docker compose pull'
+
+      - name: 'Restart containers with latest Docker image'
+        run: ssh ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST }} 'docker compose up -d --force-recreate'
