@@ -104,7 +104,7 @@ jobs:
       - name: 'Clean up GitHub container registry'
         uses: Chizkiyahu/delete-untagged-ghcr-action@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GHCR_CLEANER_PAT }}
           repository_owner: ${{ github.repository_owner }}
           repository: ${{ github.repository }}
           untagged_only: true
