@@ -102,10 +102,11 @@ jobs:
       packages: write
     steps:
       - name: 'Clean up GitHub container registry'
-        uses: quartx-analytics/ghcr-cleaner@v1
+        uses: Chizkiyahu/delete-untagged-ghcr-action@v6
         with:
-          owner-type: user
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository-name: ${{ github.repository }}
-          package-name: adeharo-dev
-          delete-untagged: true
+          repository_owner: ${{ github.repository_owner }}
+          repository: ${{ github.repository }}
+          untagged_only: true
+          owner_type: user
+          except_untagged_multiplatform: true
