@@ -8,3 +8,5 @@ WORKDIR /var/www/adeharo-dev
 COPY ./public/ ./
 
 VOLUME /ssl
+
+EXPOSE 443

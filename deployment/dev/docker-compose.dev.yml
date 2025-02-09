@@ -1,6 +1,6 @@
 services:
   nginx:
-    image: adeharo-dev-web:0.0.1
+    image: ghcr.io/adeharo9/adeharo-dev:latest
     ports:
       - "8443:443"
     volumes:

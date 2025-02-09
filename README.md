@@ -23,3 +23,21 @@ Once that's set up, you can simply run:
 ```shell
 docker-compose up -d
 ```
+
+## Build, tag, and push to Dockerhub
+
+First, login to Dockerhub:
+
+```shell
+docker login
+```
+
+To build and tag the Docker image, simply run
+```shell
+docker build . -t ghcr.io/adeharo9/adeharo-dev:latest
+```
+
+To push it to the public repository, run:
+```shell
+docker push ghcr.io/adeharo9/adeharo-dev:latest
+```
