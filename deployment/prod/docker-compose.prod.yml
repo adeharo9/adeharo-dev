@@ -5,6 +5,10 @@ services:
       - "443:443"
     volumes:
       - "ssl-certs:/ssl:ro"
+    deploy:
+      resources:
+        limits:
+          memory: 200M
 
 volumes:
   ssl-certs:
