@@ -11,8 +11,8 @@ concurrency:
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  DOCKER_IMAGE_COMMIT_TAG: ${{env.DOCKER_REGISTRY}}/${{github.repository}}:${{github.sha}}
-  DOCKER_IMAGE_LATEST_TAG: ${{env.DOCKER_REGISTRY}}/${{github.repository}}:latest
+  DOCKER_IMAGE_COMMIT_TAG: ghcr.io/${{github.repository}}:${{github.sha}}
+  DOCKER_IMAGE_LATEST_TAG: ghcr.io/${{github.repository}}:latest
 
 jobs:
   publish-docker-image:
