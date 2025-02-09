@@ -90,3 +90,19 @@ jobs:
 
       - name: 'Restart containers with latest Docker image'
         run: ssh ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST }} 'docker compose up -d --force-recreate'
+
+      - name: 'Cleanup old Docker images'
+        run: ssh ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST }} 'docker image prune -f'
+
+  cleanup-registry:
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-prod
+    steps:
+      - name: 'Clean up GitHub container registry'
+        uses: quartx-analytics/ghcr-cleaner@v1
+        with:
+          owner-type: user
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository-name: ${{ github.repository }}
+          delete-untagged: true
