@@ -107,4 +107,5 @@ jobs:
           owner-type: user
           token: ${{ secrets.GITHUB_TOKEN }}
           repository-name: ${{ github.repository }}
+          package-name: adeharo-dev
           delete-untagged: true
