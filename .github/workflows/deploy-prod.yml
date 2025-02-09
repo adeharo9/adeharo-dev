@@ -18,12 +18,18 @@ jobs:
   test-config-dev:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout GitHub repository'
+        uses: actions/checkout@v4
+
       - name: 'Test Docker compose dev configuration'
         run: docker compose -f docker-compose.yml -f deployment/dev/docker-compose.dev.yml config
 
   test-config-prod:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout GitHub repository'
+        uses: actions/checkout@v4
+
       - name: 'Test Docker compose prod configuration'
         run: docker compose -f docker-compose.yml -f deployment/prod/docker-compose.prod.yml config
 
