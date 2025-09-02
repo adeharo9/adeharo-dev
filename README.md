@@ -15,11 +15,7 @@ It contains:
 
 ## Local development
 
-To run the local development environment, you'll first need some self-signed
-SSL test certificates (both public and private keys) in a `ssl/` directory
-present at the root of this repository.
-
-Once that's set up, you can simply run:
+You can simply run:
 ```shell
 docker-compose up -d
 ```

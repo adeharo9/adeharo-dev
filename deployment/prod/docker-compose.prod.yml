@@ -2,14 +2,8 @@ services:
   nginx:
     image: ghcr.io/adeharo9/adeharo-dev:latest
     ports:
-      - "443:443"
-    volumes:
-      - "ssl-certs:/ssl:ro"
+      - "127.0.0.1:7070:80"
     deploy:
       resources:
         limits:
           memory: 200M
-
-volumes:
-  ssl-certs:
-    external: true
