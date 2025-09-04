@@ -1,8 +1,6 @@
 services:
   nginx:
     image: nginx:1.29.1-alpine
-    ports:
-      - "127.0.0.1:7070:80"
     volumes:
       - "./config/nginx:/etc/nginx/conf.d:ro"
       - "./public:/var/www/adeharo-dev:ro"

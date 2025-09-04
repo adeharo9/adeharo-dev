@@ -1,8 +1,6 @@
 services:
   nginx:
     image: ghcr.io/adeharo9/adeharo-dev:latest
-    ports:
-      - "127.0.0.1:7070:80"
     deploy:
       resources:
         limits:
